@@ -20,7 +20,13 @@
 (setq ns-use-native-fullscreen nil)
 
 ;; put the backup files somewhere else
-(setq backup-directory-alist `(("." . "~/.saves")))
+(setq backup-directory-alist '(("." . "~/.saves"))
+  backup-by-copying t    ; Don't delink hardlinks
+  version-control t      ; Use version numbers on backups
+  delete-old-versions t  ; Automatically delete excess backups
+  kept-new-versions 20   ; how many of the newest versions to keep
+  kept-old-versions 5    ; and how many of the old
+  )
 
 ;; straight to work
 (setq inhibit-startup-screen t)
@@ -140,39 +146,46 @@
 (use-package elm-mode
   :ensure t)
 
-;; -- KEYS -- 
+;; -- KEYS --
+
+;; TODO; fix this bullshit function
+(defun jephron//switch-to-previous-buffer ()
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (use-package general
   :ensure t
   :config (general-define-key
-  :states '(normal visual insert emacs)
-  :prefix "SPC"
-  :non-normal-prefix "M-SPC"
-  "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
-  "SPC" '(counsel-M-x :which-key "M-x")
-  ;; Buffers
-  "bb"  '(counsel-ibuffer :which-key "buffers list")
-  "bd"  '(kill-current-buffer :which-key "kill buffer")
-  "bs"  '((lambda ()
-	    (interactive)
-	    (switch-to-buffer "*scratch*"))
-	  :which-key "open scratch buffer")
+	   :states '(normal visual insert emacs)
+	   :prefix "SPC"
+	   :non-normal-prefix "M-SPC"
+	   "TAB" '(jephron//switch-to-previous-buffer
+		   :which-key "previous buffer")
+	   "SPC" '(counsel-M-x :which-key "M-x")
+	   ;; Buffers
+	   "bb"  '(counsel-ibuffer :which-key "buffers list")
+	   "bd"  '(kill-current-buffer :which-key "kill buffer")
+	   "bs"  '((lambda ()
+		     (interactive)
+		     (switch-to-buffer "*scratch*"))
+		   :which-key "open scratch buffer")
 
-  ;; Projects
-  "pp"  '(projectile-switch-project :which-key "find files")
-  "ph"  '(projectile-find-file :which-key "find files")
+	   ;; Projects
+	   "pp"  '(projectile-switch-project :which-key "switch project")
+	   "ph"  '(projectile-find-file :which-key "find files")
 
-  ;; Search
-  "sap" '(counsel-rg :which-key "find in path")
+	   ;; Search
+	   "sap" '(counsel-rg :which-key "find in path")
   
-  ;; Toggles
-  "Tf" '((lambda ()
-	   (interactive) (toggle-frame-fullscreen))
-	 :which-key "toggle fullscreen")
-  "Ts" '(counsel-load-theme :which-key "switch theme")
+	   ;; Toggles
+	   "Tf" '((lambda ()
+		    (interactive) (toggle-frame-fullscreen))
+		  :which-key "toggle fullscreen")
+	   "Ts" '(counsel-load-theme :which-key "switch theme")
 
-  ;; Others
-  "at"  '(ansi-term :which-key "open terminal")
+	   ;; Others
+	   "at"  '(ansi-term :which-key "open terminal")
+	   
 ))
 
 ;; where are projects usually located?
