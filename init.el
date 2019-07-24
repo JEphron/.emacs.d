@@ -178,6 +178,13 @@
   :config
   (define-key elpy-mode-map (kbd "s-b") 'elpy-goto-definition))
 
+(use-package js-comint
+  :ensure t
+  :config 
+  (setq js-comint-program-command "/Users/jordan/.asdf/shims/node"))
+
+
+
 ;; elpy-django-command 
 
 
@@ -307,7 +314,7 @@
  '(compilation-environment nil)
  '(package-selected-packages
    (quote
-    (elpy diff-hl git-gutter-fringe org-bullets evil-cleverparens evil-smartparens smartparens elm-mode ivy-hydra hydra highlight-parentheses rainbow-delimiters projectile evil-surround evil-visualstar amx evil-commentary counsel which-key ivy doom-themes use-package evil)))
+    (js-comint elpy diff-hl git-gutter-fringe org-bullets evil-cleverparens evil-smartparens smartparens elm-mode ivy-hydra hydra highlight-parentheses rainbow-delimiters projectile evil-surround evil-visualstar amx evil-commentary counsel which-key ivy doom-themes use-package evil)))
  '(recentf-mode t)
  '(safe-local-variable-values
    (quote
