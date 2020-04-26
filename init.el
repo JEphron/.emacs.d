@@ -39,9 +39,10 @@
 (use-package soothe-theme)
 (load-theme 'soothe t)
 
+(use-package eval-sexp-fu)
 
 (use-package rainbow-delimiters
-  :hook prog-mode)
+  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
 (use-package counsel :demand
   ;; fuzzy searching thing
@@ -56,40 +57,40 @@
 (use-package ivy-rich :ensure t
   :config
   (setq ivy-rich-path-style 'abbrev
-        ivy-rich-display-transformers-list
-        '(ivy-switch-buffer
-          (:columns
-           ((ivy-rich-candidate (:width 20))
-            (ivy-rich-switch-buffer-size (:width 7 :align right))
-            (ivy-rich-switch-buffer-indicators
-             (:width 2 :face error :align right))
-            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-            (ivy-rich-switch-buffer-project (:width 8 :face success))
-            (ivy-rich-switch-buffer-path
-             (:width (lambda (x)
-                       (ivy-rich-switch-buffer-shorten-path
-                        x (ivy-rich-minibuffer-width 0.3))))))
-           :predicate (lambda (cand) (get-buffer cand)))
-          counsel-M-x
-          (:columns
-           ((counsel-M-x-transformer (:width 40))
-            (ivy-rich-counsel-function-docstring
-             (:face font-lock-doc-face))))
-          counsel-describe-function
-          (:columns
-           ((counsel-describe-function-transformer (:width 40))
-            (ivy-rich-counsel-function-docstring
-             (:face font-lock-doc-face))))
-          counsel-describe-variable
-          (:columns
-           ((counsel-describe-variable-transformer (:width 40))
-            (ivy-rich-counsel-variable-docstring
-             (:face font-lock-doc-face))))
-          counsel-recentf
-          (:columns
-           ((ivy-rich-candidate (:width 0.8))
-            (ivy-rich-file-last-modified-time
-             (:face font-lock-comment-face))))))
+	ivy-rich-display-transformers-list
+	'(ivy-switch-buffer
+	  (:columns
+	   ((ivy-rich-candidate (:width 20))
+	    (ivy-rich-switch-buffer-size (:width 7 :align right))
+	    (ivy-rich-switch-buffer-indicators
+	     (:width 2 :face error :align right))
+	    (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+	    (ivy-rich-switch-buffer-project (:width 8 :face success))
+	    (ivy-rich-switch-buffer-path
+	     (:width (lambda (x)
+		       (ivy-rich-switch-buffer-shorten-path
+			x (ivy-rich-minibuffer-width 0.3))))))
+	   :predicate (lambda (cand) (get-buffer cand)))
+	  counsel-M-x
+	  (:columns
+	   ((counsel-M-x-transformer (:width 40))
+	    (ivy-rich-counsel-function-docstring
+	     (:face font-lock-doc-face))))
+	  counsel-describe-function
+	  (:columns
+	   ((counsel-describe-function-transformer (:width 40))
+	    (ivy-rich-counsel-function-docstring
+	     (:face font-lock-doc-face))))
+	  counsel-describe-variable
+	  (:columns
+	   ((counsel-describe-variable-transformer (:width 40))
+	    (ivy-rich-counsel-variable-docstring
+	     (:face font-lock-doc-face))))
+	  counsel-recentf
+	  (:columns
+	   ((ivy-rich-candidate (:width 0.8))
+	    (ivy-rich-file-last-modified-time
+	     (:face font-lock-comment-face))))))
 
   (ivy-rich-mode 1))
 
@@ -103,8 +104,15 @@
   (ivy-prescient-mode 1))
 
 (use-package projectile
+  :bind
+  ("M-p" . projectile-find-file)
+  ("M-P" . projectile-switch-project)
+  ("C-M-p" . projectile-find-file-in-known-projects)
   :config
-  (setq projectile-completion-system 'ivy)
+  (setq projectile-completion-system 'ivy
+	Projectile-sort-order 'recently-active
+	projectile-indexing-method 'hybrid
+	projectile-project-search-path '("~/dev/work" "~/dev/personal"))
   (projectile-mode 1))
 
 (use-package evil :demand
@@ -131,7 +139,12 @@
 ;; language modes
 (use-package racket-mode)
 
-(global-set-key (kbd "M-P") 'projectile-find-file)
+;; keys I want
+;;    find file in project
+;;    jump to project
+;;    run action (M-S-a)
+;;    go to definition (M-b)
+;;
 
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)
