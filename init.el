@@ -18,6 +18,9 @@
 (setq recentf-max-menu-items 50)
 (setq recentf-max-saved-items 50)
 
+;; show recent files on startup
+(setq initial-buffer-choice 'counsel-recentf)
+
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t    ; Don't delink hardlinks
   version-control t      ; Use version numbers on backups
@@ -28,6 +31,17 @@
 
 ;; auto-close parens and quotes
 (electric-pair-mode 1)
+
+;; cosmetics
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(use-package soothe-theme)
+(load-theme 'soothe t)
+
+
+(use-package rainbow-delimiters
+  :hook prog-mode)
 
 (use-package counsel :demand
   ;; fuzzy searching thing
@@ -88,6 +102,11 @@
   :config
   (ivy-prescient-mode 1))
 
+(use-package projectile
+  :config
+  (setq projectile-completion-system 'ivy)
+  (projectile-mode 1))
+
 (use-package evil :demand
   ;; vimlike
   :init
@@ -105,9 +124,21 @@
 
 (use-package evil-cleverparens
   :after (evil)
-  :hook (emacs-lisp-mode . evil-cleverparens-mode))
+  :hook ((emacs-lisp-mode . evil-cleverparens-mode)
+	 (racket-mode . evil-cleverparens-mode))
+  )
+
+;; language modes
+(use-package racket-mode)
+
+(global-set-key (kbd "M-P") 'projectile-find-file)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 (load custom-file)
+
+
+;; todo:
+;; check out some interesting configs:
+;;   https://git.sr.ht/~tslil/dotfiles/tree/0de26bf98f8ce2360c5e0614909ab349c8393eb8/emacs/init.el
