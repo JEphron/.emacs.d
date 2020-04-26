@@ -1,6 +1,10 @@
+\#*
+.#*
 *~
 recentf
 elpa/
 backup/
 auto-save-list/
 thumbs/
+racket-mode/
+projectile-bookmarks.eld
