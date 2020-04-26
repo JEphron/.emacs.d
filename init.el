@@ -139,13 +139,6 @@
 ;; language modes
 (use-package racket-mode)
 
-;; keys I want
-;;    find file in project
-;;    jump to project
-;;    run action (M-S-a)
-;;    go to definition (M-b)
-;;
-
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
