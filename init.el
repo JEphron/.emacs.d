@@ -46,7 +46,7 @@
 
 (use-package counsel :demand
   ;; fuzzy searching thing
-  :bind ("M-A" . counsel-M-x)
+  :bind ("M-A" . counsel-M-x) ("M-F" . counsel-rg)
   :config
   (setq ivy-initial-inputs-alist nil
 	ivy-use-virtual-buffers t
@@ -120,7 +120,11 @@
   :init
   (setq evil-want-keybinding nil)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (with-eval-after-load 'evil
+    (defalias #'forward-evil-word #'forward-evil-symbol)
+    ;; make evil-search-word look for symbol rather than word boundaries
+    (setq-default evil-symbol-word-search t)))
 
 (use-package evil-collection
   :after (evil))
