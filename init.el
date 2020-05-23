@@ -105,9 +105,9 @@
 
 (use-package projectile
   :bind
-  ("M-p" . projectile-find-file)
-  ("M-P" . projectile-switch-project)
-  ("C-M-p" . projectile-find-file-in-known-projects)
+  ("C-M-p" . projectile-switch-project)
+  ("M-P" . projectile-find-file)
+  ;; ("M-p" . projectile-find-file-in-known-projects)
   :config
   (setq projectile-completion-system 'ivy
 	Projectile-sort-order 'recently-active
@@ -140,8 +140,30 @@
 	 (racket-mode . evil-cleverparens-mode))
   )
 
+(use-package which-key
+  ;; show possible key-chord completions
+  :config
+  (setq which-key-idle-delay 0.1))
+
+;; dependencies
+(use-package f)
+(use-package s)
+(use-package emacs)
+(use-package dash)
+(use-package reformatter)
+
 ;; language modes
 (use-package racket-mode)
+(use-package haskell-mode
+  :bind ("s-F" . (lambda () (interactive)
+		   (shell-command-on-region
+		    (point-min) (point-max)
+		    "ormolu"
+		    t t))))
+
+
+(use-package elm-mode
+  :after (f s emacs dash reformatter))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (unless (file-exists-p custom-file)

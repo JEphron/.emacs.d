@@ -8,7 +8,7 @@
     ("a77ced882e25028e994d168a612c763a4feb8c4ab67c5ff48688654d0264370c" default)))
  '(package-selected-packages
    (quote
-    (csv-mode eval-sexp-fu rainbow-delimiters projectile soothe-theme racket-mode ivy-rich ivy-prescient prescient counsel use-package evil-surround evil-cleverparens evil)))
+    (which-key whick-key haskell-mode reformatter f elm-mode csv-mode eval-sexp-fu rainbow-delimiters projectile soothe-theme racket-mode ivy-rich ivy-prescient prescient counsel use-package evil-surround evil-cleverparens evil)))
  '(python-fill-docstring-style (quote django)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
