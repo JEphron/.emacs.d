@@ -154,12 +154,15 @@
 
 ;; language modes
 (use-package racket-mode)
+
+;; haskell
+(reformatter-define haskell-format
+  :program "ormolu")
+
 (use-package haskell-mode
-  :bind ("s-F" . (lambda () (interactive)
-		   (shell-command-on-region
-		    (point-min) (point-max)
-		    "ormolu"
-		    t t))))
+  :bind ("s-F" . haskell-format-buffer)
+  :hook
+  (haskell-mode . haskell-format-on-save-mode))
 
 
 (use-package elm-mode
