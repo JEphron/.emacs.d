@@ -1,3 +1,5 @@
+(load-theme 'wheatgrass t)
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -36,8 +38,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
-(use-package soothe-theme)
-(load-theme 'soothe t)
+;; (use-package soothe-theme)
 
 (use-package eval-sexp-fu)
 
@@ -101,7 +102,8 @@
 (use-package ivy-prescient
   :after (prescient)
   :config
-  (ivy-prescient-mode 1))
+  (ivy-prescient-mode 1)
+  (add-to-list 'ivy-sort-functions-alist '(counsel-recentf . nil)))
 
 (use-package projectile
   :bind
@@ -134,6 +136,11 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package evil-commentary
+  :after (evil)
+  :config
+  (evil-commentary-mode 1))
+
 (use-package evil-cleverparens
   :after (evil)
   :hook ((emacs-lisp-mode . evil-cleverparens-mode)
@@ -152,10 +159,17 @@
 (use-package dash)
 (use-package reformatter)
 
+(use-package lsp-mode
+  :bind ("C-b" . lsp-find-definition))
+(use-package lsp-ui)
+(use-package flycheck)
+(use-package company)
+
 ;; language modes
 (use-package racket-mode)
 
 ;; haskell
+(use-package lsp-haskell)
 (reformatter-define haskell-format
   :program "ormolu")
 
