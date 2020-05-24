@@ -112,7 +112,7 @@
   ;; ("M-p" . projectile-find-file-in-known-projects)
   :config
   (setq projectile-completion-system 'ivy
-	Projectile-sort-order 'recently-active
+	projectile-sort-order 'recently-active
 	projectile-indexing-method 'hybrid
 	projectile-project-search-path '("~/dev/work" "~/dev/personal"))
   (projectile-mode 1))
