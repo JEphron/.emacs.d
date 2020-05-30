@@ -49,6 +49,21 @@
 ;; make all "yes or no" prompts show "y or n" instead
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; font size stuff
+(defun je/change-font-scale (amnt)
+  (set-face-attribute 'default nil :height
+		    (+ (face-attribute 'default :height) amnt)))
+
+(defun je/increase-font-scale () (interactive)
+  (je/change-font-scale 10))
+
+(defun je/decrease-font-scale () (interactive) 
+  (je/change-font-scale -10))
+
+(bind-key "<C-S-prior>" 'je/increase-font-scale)
+(bind-key "<C-S-next>" 'je/decrease-font-scale)
+
+;; packages 
 (use-package eval-sexp-fu)
 (use-package aggressive-indent)
 
@@ -222,19 +237,6 @@
   :hook
   (haskell-mode . haskell-format-on-save-mode)
   (haskell-mode . lsp))
-
-(defun je/change-font-scale (amnt)
-  (set-face-attribute 'default nil :height
-		    (+ (face-attribute 'default :height) amnt)))
-
-(defun je/increase-font-scale () (interactive)
-  (je/change-font-scale 10))
-
-(defun je/decrease-font-scale () (interactive) 
-  (je/change-font-scale -10))
-
-(bind-key "<C-S-prior>" 'je/increase-font-scale)
-(bind-key "<C-S-next>" 'je/decrease-font-scale)
 
 (use-package elm-mode
   :after (f s emacs dash reformatter))
