@@ -24,23 +24,33 @@
 (setq initial-buffer-choice 'counsel-recentf)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-  backup-by-copying t    ; Don't delink hardlinks
-  version-control t      ; Use version numbers on backups
-  delete-old-versions t  ; Automatically delete excess backups
-  kept-new-versions 20   ; how many of the newest versions to keep
-  kept-old-versions 5    ; and how many of the old
-  )
+      backup-by-copying t    ; Don't delink hardlinks
+      version-control t      ; Use version numbers on backups
+      delete-old-versions t  ; Automatically delete excess backups
+      kept-new-versions 20   ; how many of the newest versions to keep
+      kept-old-versions 5    ; and how many of the old
+      )
 
 ;; auto-close parens and quotes
 (electric-pair-mode 1)
+
+;; whenever an external process changes a file underneath emacs, and there
+;; was no unsaved changes in the corresponding buffer, just revert its
+;; content to reflect what's on-disk.
+(global-auto-revert-mode 1)
 
 ;; cosmetics
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+(global-display-line-numbers-mode 1)
 ;; (use-package soothe-theme)
 
+;; make all "yes or no" prompts show "y or n" instead
+(fset 'yes-or-no-p 'y-or-n-p)
+
 (use-package eval-sexp-fu)
+(use-package aggressive-indent)
 
 (use-package rainbow-delimiters
   :hook (emacs-lisp-mode . rainbow-delimiters-mode))
@@ -97,10 +107,10 @@
 
 (use-package prescient
   ;; hopefully sort better
-  :after (ivy))
+  :after ivy)
 
 (use-package ivy-prescient
-  :after (prescient)
+  :after prescient
   :config
   (ivy-prescient-mode 1)
   (add-to-list 'ivy-sort-functions-alist '(counsel-recentf . nil)))
@@ -112,7 +122,7 @@
   ;; ("M-p" . projectile-find-file-in-known-projects)
   :config
   (setq projectile-completion-system 'ivy
-	projectile-sort-order 'recently-active
+	Projectile-sort-order 'recently-active
 	projectile-indexing-method 'hybrid
 	projectile-project-search-path '("~/dev/work" "~/dev/personal"))
   (projectile-mode 1))
@@ -129,28 +139,39 @@
     (setq-default evil-symbol-word-search t)))
 
 (use-package evil-collection
-  :after (evil))
+  :after evil
+  :config
+  (setq evil-collection-mode-list '(dired eshell eww git-timemachine ibuffer image image+))
+  (evil-collection-init))
 
 (use-package evil-surround
-  :after (evil)
+  :after evil
   :config
   (global-evil-surround-mode 1))
 
 (use-package evil-commentary
-  :after (evil)
+  :after evil
   :config
   (evil-commentary-mode 1))
 
 (use-package evil-cleverparens
-  :after (evil)
+  :after evil
   :hook ((emacs-lisp-mode . evil-cleverparens-mode)
-	 (racket-mode . evil-cleverparens-mode))
-  )
+	 (racket-mode . evil-cleverparens-mode)))
+
+(use-package ace-jump-mode
+  :after evil-collection
+  :bind (
+	 :map evil-normal-state-map
+	 ("C-." . ace-jump-mode)
+	 :map evil-insert-state-map
+	 ("C-." . ace-jump-mode)))
 
 (use-package which-key
   ;; show possible key-chord completions
   :config
-  (setq which-key-idle-delay 0.1))
+  (setq which-key-idle-delay 0.2)
+  (which-key-mode 1))
 
 ;; dependencies
 (use-package f)
@@ -159,14 +180,32 @@
 (use-package dash)
 (use-package reformatter)
 
+(use-package popwin
+  :config
+  (popwin-mode 1))
+
 (use-package lsp-mode
-  :bind ("C-b" . lsp-find-definition))
-(use-package lsp-ui)
+  :after evil-collection
+  :bind
+  ("C-j" . lsp-ui-doc-glance)
+  ("C-b" . lsp-find-definition))
+
+(use-package lsp-ui
+  :config
+  (setq lsp-ui-doc-enable nil))
+
 (use-package flycheck)
 (use-package company)
 
 ;; language modes
 (use-package racket-mode)
+(use-package rust-mode
+  :bind
+  ("C-M-r" . rust-run)
+  :config
+  (setq rust-format-on-save t)
+  :hook
+  (rust-mode-hook . (lambda () (setq indent-tabs-mode nil))))
 
 ;; haskell
 (use-package lsp-haskell)
@@ -174,9 +213,12 @@
   :program "ormolu")
 
 (use-package haskell-mode
-  :bind ("s-F" . haskell-format-buffer)
+  :bind
+  ("s-F" . haskell-format-buffer)
+  ("C-M-r" . (lambda () (interactive) (async-shell-command "stack run") ))
   :hook
-  (haskell-mode . haskell-format-on-save-mode))
+  (haskell-mode . haskell-format-on-save-mode)
+  (haskell-mode . lsp))
 
 
 (use-package elm-mode
