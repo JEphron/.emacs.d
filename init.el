@@ -186,9 +186,12 @@
 
 (use-package lsp-mode
   :after evil-collection
-  :bind
-  ("C-j" . lsp-ui-doc-glance)
-  ("C-b" . lsp-find-definition))
+  :bind (
+	 ("C-j" . lsp-ui-doc-glance)
+	 :map evil-normal-state-map ;; todo: merge evil maps (general?)
+	 ("C-b" . lsp-find-definition)
+	 :map evil-insert-state-map
+	 ("C-b" . lsp-find-definition)))
 
 (use-package lsp-ui
   :config
@@ -196,6 +199,8 @@
 
 (use-package flycheck)
 (use-package company)
+
+(use-package buffer-expose)
 
 ;; language modes
 (use-package racket-mode)
@@ -220,6 +225,18 @@
   (haskell-mode . haskell-format-on-save-mode)
   (haskell-mode . lsp))
 
+(defun je/change-font-scale (amnt)
+  (set-face-attribute 'default nil :height
+		    (+ (face-attribute 'default :height) amnt)))
+
+(defun je/increase-font-scale () (interactive)
+  (je/change-font-scale 10))
+
+(defun je/decrease-font-scale () (interactive) 
+  (je/change-font-scale -10))
+
+(bind-key "<C-S-prior>" 'je/increase-font-scale)
+(bind-key "<C-S-next>" 'je/decrease-font-scale)
 
 (use-package elm-mode
   :after (f s emacs dash reformatter))
