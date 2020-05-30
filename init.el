@@ -200,8 +200,6 @@
 (use-package flycheck)
 (use-package company)
 
-(use-package buffer-expose)
-
 ;; language modes
 (use-package racket-mode)
 (use-package rust-mode
