@@ -39,10 +39,26 @@
 ;; content to reflect what's on-disk.
 (global-auto-revert-mode 1)
 
-;; cosmetics
+;; -- cosmetics
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+(setq-default show-trailing-whitespace t)
+;; maybe? (https://github.com/lbrayner/dotemacs/blob/e15e0cdd19969f0f7a49a05a6f0814fc1132d616/init.el)
+(let ((no-show-trailing-space '(slime-repl-mode
+                                help-mode
+                                eshell-mode
+                                shell-mode
+                                term-mode)))
+  (cl-loop for mode in no-show-trailing-space
+           do (let ((hook (concat (symbol-name mode) "-hook")))
+                (add-hook (intern hook)
+			  (lambda ()
+			    (setq show-trailing-whitespace nil))))))
+
+;; highlight matching paren
+(show-paren-mode 1)
+
 (global-display-line-numbers-mode 1)
 ;; (use-package soothe-theme)
 
@@ -57,22 +73,38 @@
 (defun je/increase-font-scale () (interactive)
   (je/change-font-scale 10))
 
-(defun je/decrease-font-scale () (interactive) 
+(defun je/decrease-font-scale () (interactive)
   (je/change-font-scale -10))
 
 (bind-key "<C-S-prior>" 'je/increase-font-scale)
 (bind-key "<C-S-next>" 'je/decrease-font-scale)
 
-;; packages 
+;; packages
 (use-package eval-sexp-fu)
 (use-package aggressive-indent)
 
 (use-package rainbow-delimiters
   :hook (emacs-lisp-mode . rainbow-delimiters-mode))
 
+(defun je/find-in-path (start end) (interactive "r")
+       (if (use-region-p)
+	   (deactivate-mark
+	    (counsel-rg (buffer-substring-no-properties start end)))
+	 (counsel-rg)))
+
+;; hello abc /def / ghi/ world
+
 (use-package counsel :demand
+  :after evil
   ;; fuzzy searching thing
-  :bind ("M-A" . counsel-M-x) ("M-F" . counsel-rg)
+  :bind (("M-A" . counsel-M-x)
+	 ("M-F" . je/find-in-path)
+	 :map evil-normal-state-map
+	 ("/" . swiper)
+	 :map evil-visual-state-map
+	 ("/" . (lambda () (interactive)
+		  (deactivate-mark)
+ 		  (swiper (buffer-substring-no-properties (region-beginning) (region-end))))))
   :config
   (setq ivy-initial-inputs-alist nil
 	ivy-use-virtual-buffers t
