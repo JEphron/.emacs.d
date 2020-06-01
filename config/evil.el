@@ -2,8 +2,8 @@
 (use-package evil :demand
   :bind
   (:map evil-window-map
-	("-" . evil-window-split)
-	("|" . evil-window-vsplit))
+        ("-" . evil-window-split)
+        ("|" . evil-window-vsplit))
   :init
   (setq evil-want-keybinding nil)
   :config
@@ -17,12 +17,12 @@
   :after evil
   :config
   (setq evil-collection-mode-list '(dired
-				    eshell
-				    eww
-				    git-timemachine
-				    ibuffer
-				    image
-				    image+))
+                                    eshell
+                                    eww
+                                    git-timemachine
+                                    ibuffer
+                                    image
+                                    image+))
   (evil-collection-init))
 
 (use-package evil-surround
@@ -38,4 +38,4 @@
 (use-package evil-cleverparens
   :after evil
   :hook ((emacs-lisp-mode . evil-cleverparens-mode)
-	 (racket-mode . evil-cleverparens-mode)))
+         (racket-mode . evil-cleverparens-mode)))
