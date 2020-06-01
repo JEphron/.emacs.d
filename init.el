@@ -3,15 +3,15 @@
 (defun je/load-directory (dir)
   (let* ((files (directory-files dir t "\\.el")))
     (mapc (lambda (file)
-	    (with-demoted-errors
-		(load (file-name-sans-extension file) nil t)))
-	  files)))
+            (with-demoted-errors
+                load (file-name-sans-extension file) nil t)))
+          files)))
 
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("gnu" . "https://elpa.gnu.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")))
+                         ("gnu" . "https://elpa.gnu.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")))
 
 (package-initialize)
 
