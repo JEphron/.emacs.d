@@ -1,5 +1,9 @@
 
 (use-package evil :demand
+  :bind
+  (:map evil-window-map
+	("-" . evil-window-split)
+	("|" . evil-window-vsplit))
   :init
   (setq evil-want-keybinding nil)
   :config
