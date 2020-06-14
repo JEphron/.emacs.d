@@ -4,6 +4,8 @@
   (:map evil-window-map
         ("-" . evil-window-split)
         ("|" . evil-window-vsplit))
+  (:map evil-normal-state-map
+        ("g p" . xref-pop-marker-stack))
   :init
   (setq evil-want-keybinding nil)
   :config
@@ -22,6 +24,7 @@
                                     git-timemachine
                                     ibuffer
                                     image
+                                    slime
                                     image+))
   (evil-collection-init))
 

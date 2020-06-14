@@ -7,5 +7,5 @@
   (setq projectile-completion-system 'ivy
         Projectile-sort-order 'recently-active
         projectile-indexing-method 'hybrid
-        projectile-project-search-path '("~/dev/work" "~/dev/personal"))
+        projectile-project-search-path '("~/eng/work" "~/eng/personal"))
   (projectile-mode 1))

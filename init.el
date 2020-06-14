@@ -4,7 +4,7 @@
   (let* ((files (directory-files dir t "\\.el")))
     (mapc (lambda (file)
             (with-demoted-errors
-                load (file-name-sans-extension file) nil t)))
+                (load (file-name-sans-extension file) nil t)))
           files)))
 
 (require 'package)
@@ -25,6 +25,23 @@
 ;; load all the files in the .emacs.d/config directory
 (je/load-directory
  (expand-file-name "config" (file-name-directory user-init-file)))
+
+
+(defun je/splitwin ()
+  (interactive)
+  ;; Create new window right of the current one
+  ;; Current window is 80 characters (columns) wide
+  (split-window-right 80)
+  ;; Go to next window
+  (other-window 1)
+  ;; Create new window below current one
+  (split-window-below)
+  ;; Start eshell in current window
+  (eshell)
+  ;; Go to previous window
+  (other-window -1)
+  ;; never open any buffer in window with shell
+  (set-window-dedicated-p (nth 1 (window-list)) t))
 
 ;; customize
 (setq custom-file "~/.emacs.d/custom.el")
