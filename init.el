@@ -23,7 +23,7 @@
 (setq recentf-max-menu-items 50)
 (setq recentf-max-saved-items 50)
 
-;; dont' indent using tabs
+;; don't indent using tabs
 (setq-default indent-tabs-mode nil)
 
 ;; show recent files on startup
@@ -35,6 +35,9 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
+
+;; macos - avoid horrible fullscreen animations
+(setq ns-use-native-fullscreen nil)
 
 ;; try to remember what things were open
 (desktop-save-mode 1)
