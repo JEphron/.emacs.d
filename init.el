@@ -107,9 +107,9 @@
 
  (use-package counsel :demand
    ;; fuzzy searching thing
-   :bind (("M-A" . counsel-M-x)
+   :bind (("s-A" . counsel-M-x)
  	 ; ("/" . swiper) ; todo: only in normal mode
-          ("M-F" . counsel-rg)
+          ("s-F" . counsel-rg)
  	 )
    :config
    (setq ivy-initial-inputs-alist nil
@@ -216,6 +216,14 @@
  ;; ------------
  ;; -- lang:nim --
  (use-package nim-mode)
+
+ ;; ------------
+ ;; -- lang:d --
+ (use-package d-mode)
+
+ ;; ------------
+ ;; -- lang:glsl --
+ (use-package glsl-mode)
 
  ;; ------------
  ;; -- visual --
