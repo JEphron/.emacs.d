@@ -62,6 +62,7 @@
 
 (setq-default show-trailing-whitespace t)
 
+
 (use-package doom-themes)
 
  ;; show key info
@@ -131,12 +132,18 @@
  (use-package projectile
    :bind (:map
           projectile-mode-map
-          ("C-c p" . projectile-command-map)
+          ("C-c p" . projectile-command-map))
    :config
-   (projectile-mode 1))
+   (projectile-mode 1)
+   (setq projectile-completion-system 'ivy
+            projectile-sort-order 'recently-active
+            projectile-indexing-method 'hybrid
+            projectile-project-search-path '(;"~/eng/work"
+                                             ;"~/eng/personal"
+                                             "~/devel/personal")))
+
  ;; ------------------
  ;; -- lang:general --
-
 
  (use-package lsp-mode
    :hook
